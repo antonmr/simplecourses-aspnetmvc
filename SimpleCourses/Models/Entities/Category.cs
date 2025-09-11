@@ -17,9 +17,9 @@ namespace SimpleCourses.Models.Entities
         public string ThumbnailImagePath { get; set; }
 
         [ForeignKey("CategoryId")]
-        public ICollection<CategoryItem> CategoryItems { get; set; }
+        public ICollection<CategoryItem>? CategoryItems { get; set; }
 
         [ForeignKey("CategoryId")]
-        public virtual ICollection<UserCategory> UserCategories { get; set; }
+        public virtual ICollection<UserCategory>? UserCategories { get; set; }
     }
 }
