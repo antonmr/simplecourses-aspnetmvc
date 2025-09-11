@@ -11,10 +11,10 @@ namespace SimpleCourses.Models.Entities
         [StringLength(200, MinimumLength = 2)]
         public string Title { get; set; }
 
-        [Required]
-        public string ThumbnailImagePath { get; set; }
+        public string HTMLContent { get; set; }
 
-        [ForeignKey("MediaTypeId")]
-        public virtual ICollection<CategoryItem> CategoryItems { get; set; }
+        public string VideoLink { get; set; }
+
+        public CategoryItem CategoryItem { get; set; }
     }
 }
