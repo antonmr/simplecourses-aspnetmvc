@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SimpleCourses.Interfaces;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleCourses.Models.Entities
 {
-    public class MediaType
+    public class MediaType : IPrimaryProperties
     {
         public int Id { get; set; }
 

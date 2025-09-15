@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleCourses.Data;
 
@@ -11,9 +12,11 @@ using SimpleCourses.Data;
 namespace SimpleCourses.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250911013754_AddDescriptionToCategoryItemModel")]
+    partial class AddDescriptionToCategoryItemModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,10 +321,7 @@ namespace SimpleCourses.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryItemId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("HTMLContent")
+                    b.Property<string>("ThumbnailImagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -330,13 +330,7 @@ namespace SimpleCourses.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("VideoLink")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryItemId");
 
                     b.ToTable("Contents");
                 });
@@ -446,22 +440,17 @@ namespace SimpleCourses.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SimpleCourses.Models.Entities.Content", null)
+                        .WithMany("CategoryItems")
+                        .HasForeignKey("MediaTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SimpleCourses.Models.Entities.MediaType", null)
                         .WithMany("CategoryItems")
                         .HasForeignKey("MediaTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SimpleCourses.Models.Entities.Content", b =>
-                {
-                    b.HasOne("SimpleCourses.Models.Entities.CategoryItem", "CategoryItem")
-                        .WithMany()
-                        .HasForeignKey("CategoryItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CategoryItem");
                 });
 
             modelBuilder.Entity("SimpleCourses.Models.Entities.UserCategory", b =>
@@ -489,6 +478,11 @@ namespace SimpleCourses.Data.Migrations
                     b.Navigation("CategoryItems");
 
                     b.Navigation("UserCategories");
+                });
+
+            modelBuilder.Entity("SimpleCourses.Models.Entities.Content", b =>
+                {
+                    b.Navigation("CategoryItems");
                 });
 
             modelBuilder.Entity("SimpleCourses.Models.Entities.MediaType", b =>

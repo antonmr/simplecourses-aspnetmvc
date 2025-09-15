@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Identity.Client;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleCourses.Models.Entities
@@ -15,6 +16,12 @@ namespace SimpleCourses.Models.Entities
 
         public string VideoLink { get; set; }
 
-        public CategoryItem CategoryItem { get; set; }
+        public CategoryItem? CategoryItem { get; set; }
+
+        [NotMapped]
+        public int CatItemId { get; set; }
+
+        [NotMapped]
+        public int CategoryId { get; set; }
     }
 }
