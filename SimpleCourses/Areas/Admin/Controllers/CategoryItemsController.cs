@@ -87,6 +87,8 @@ namespace SimpleCourses.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), new { categoryId = categoryItem.CategoryId });
             }
+
+            categoryItem.MediaTypes = _context.MediaTypes.ToList().ConvertToSelectList(categoryItem.MediaTypeId);
             return View(categoryItem);
         }
 
