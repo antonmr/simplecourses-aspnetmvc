@@ -1,17 +1,32 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using SimpleCourses.Data
+@inject SignInManager<ApplicationUser> signInManager;
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
+@if(signInManager.IsSignedIn(User)) {
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+}else{
+<div class="text-center">
+    <h1 class="display-4">Not logged in.</h1>
+</div>
+}
 
 <div class="modal fade" id="UserLoginModal" tabindex="-1" aria-labelledby="UserLoginModalLabel" aria-hidden="true">
     <partial name="_UserLoginPartial" />
 </div>
 
+<div class="modal fade" id="UserRegistrationModal" tabindex="-1" aria-labelledby="UserRegistrationModalLabel" aria-hidden="true">
+    <partial name="_UserRegistrationPartial" />
+</div>
+
 @section Scripts {
     <script src="~/js/userlogin.js" asp-append-version="true"></script>
+    <script src="~/js/userregistration.js" asp-append-version="true"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

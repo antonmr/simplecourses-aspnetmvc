@@ -59,5 +59,40 @@ namespace SimpleCourses.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterUser(RegistrationModel registrationModel)
+        {
+            registrationModel.RegistrationInvalid = "true";
+
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = registrationModel.Email,
+                    Email = registrationModel.Email,
+                    FirstName = registrationModel.FirstName,
+                    LastName = registrationModel.LastName,
+                    Address1 = registrationModel.Address1,
+                    Address2 = registrationModel.Address2,
+                    Postcode = registrationModel.PostCode,
+                    PhoneNumber = registrationModel.PhoneNumber,
+                };
+
+                var result = await _userManager.CreateAsync(user, registrationModel.Password);
+                if (result.Succeeded)
+                {
+                    registrationModel.RegistrationInvalid = string.Empty;
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return PartialView("_UserRegistrationPartial", registrationModel);
+                }
+
+                ModelState.AddModelError(string.Empty, "Registration attempt failed.");
+            }
+
+            return PartialView("_UserRegistrationPartial", registrationModel);
+        }
     }
 }
